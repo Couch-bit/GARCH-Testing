@@ -1,0 +1,104 @@
+---
+title: "Obciążenie estymatorów w GARCH(1, 1)"
+author: "Cezary Moskal"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    code_folding: "hide"
+    css: "style.css"
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(latex2exp)
+library(reshape2)
+library(tidyverse)
+```
+
+```{r Functions}
+n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
+
+plot_err <- function(err, variable, mod, dis,
+                     cap = 0.4, interval = 0.05) {
+  if (dis == 'std') {
+    dist_name = 't-student' 
+  }
+  else {
+    dist_name = 'skew-normal'
+  }
+  if (variable == 'omega') {
+    latex = '\\omega'
+  }
+  else if (variable == 'alpha') {
+    latex = '$\\alpha_1$'
+  }
+  else {
+    latex = '$\\beta_1$'
+  }
+  p = err %>%
+    select(-c(Me, Me_err)) %>%
+    filter(parameter == variable, model == mod, dist == dis) %>%
+    melt(id = c('model', 'dist', 'n', 'parameter')) %>%
+    ggplot() +
+    geom_col(mapping = aes(x = n, y = value, fill = variable),
+             position = 'dodge', color = 'black') +
+    geom_hline(aes(yintercept = 0)) +
+    ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
+            TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
+                       dist_name, ')'))) +
+    xlab('Próba') +
+    ylab(TeX(paste0('Obciążenie ',  latex))) +
+    scale_x_continuous(trans = 'log10', expand = c(0, 0),
+                       breaks = n) +
+    scale_y_continuous(expand = c(0.05, 0), limits = c(-cap, cap),
+                       breaks = seq(-5, 5, interval),
+                       labels = scales::percent) +
+    scale_fill_manual(values = c('#DB473B', '#009E73'),
+                      labels = c('Fałszywe Założenie',
+                                 'Prawdziwe Założenie')) +
+    guides(fill = guide_legend('')) +
+    theme_bw()
+  
+  return(p)
+}
+```
+
+```{r LoadData}
+error <- read.csv('Results/Error.csv')
+```
+
+```{r Student_Model1}
+plot_err(error, 'omega', 1, 'std')
+plot_err(error, 'alpha', 1, 'std')
+plot_err(error, 'beta', 1, 'std')
+```
+
+```{r Student_Model2}
+plot_err(error, 'omega', 2, 'std')
+plot_err(error, 'alpha', 2, 'std', 0.8, 0.1)
+plot_err(error, 'beta', 2, 'std', 4, 0.5)
+```
+
+```{r Student_Model3}
+plot_err(error, 'omega', 3, 'std')
+plot_err(error, 'alpha', 3, 'std')
+plot_err(error, 'beta', 3, 'std')
+```
+
+```{r SkewNorm_Model1}
+plot_err(error, 'omega', 1, 'snorm')
+plot_err(error, 'alpha', 1, 'snorm')
+plot_err(error, 'beta', 1, 'snorm')
+```
+
+```{r SkewNorm_Model2}
+plot_err(error, 'omega', 2, 'snorm')
+plot_err(error, 'alpha', 2, 'snorm')
+plot_err(error, 'beta', 2, 'snorm', 2, 0.25)
+```
+
+```{r SkewNorm_Model3}
+plot_err(error, 'omega', 3, 'snorm', 0.5, 0.1)
+plot_err(error, 'alpha', 3, 'snorm')
+plot_err(error, 'beta', 3, 'snorm')
+```

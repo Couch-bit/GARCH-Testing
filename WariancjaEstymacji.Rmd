@@ -1,0 +1,99 @@
+---
+title: "Wariancja estymatorów GARCH(1,1)"
+author: "Cezary Moskal"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: "hide"
+    css: "style.css"
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(rugarch)
+library(tidyverse)
+library(latex2exp)
+```
+
+```{r Functions}
+n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
+colors <- c('Niepoprawny rozkład' = '#DB473B',
+            'Poprawny rozkład' = '#009E73')
+
+plot_sd <- function(sd, variable, mod, dis, cap, interval) {
+  if (dis == 'std') {
+    dist_name = 't-student' 
+  }
+  else {
+    dist_name = 'skew-normal'
+  }
+  if (variable == 'omega') {
+    latex = '\\omega'
+  }
+  else if (variable == 'alpha') {
+    latex = '$\\alpha_1$'
+  }
+  else {
+    latex = '$\\beta_1$'
+  }
+  p = sd %>% 
+  filter(parameter == variable, model == mod, dist == dis) %>%
+  ggplot(key_glyph = draw_key_rect) +
+    geom_line(aes(x = n, y = std_err, color = 'Niepoprawny rozkład')) +
+    geom_line(aes(x = n, y = std, color = 'Poprawny rozkład')) +
+    ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
+            TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
+                       dist_name, ')'))) +
+    xlab('Próba') +
+    ylab(TeX(paste0('Odchylenie standardowe ',  latex))) +
+    scale_x_continuous(trans = 'log10', expand = c(0, 0),
+                       breaks = n) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, cap),
+                       breaks = seq(0, cap, interval)) +
+    scale_color_manual(values = colors) +
+    guides(color = guide_legend('')) +
+    theme_bw()
+  return(p)
+}
+```
+
+```{r LoadData}
+stds <- read.csv('Results/Std.csv')
+```
+
+```{r Student_Model1}
+plot_sd(stds, 'omega', 1, 'std', 1, 0.1)
+plot_sd(stds, 'alpha', 1, 'std', 0.4, 0.05)
+plot_sd(stds, 'beta', 1, 'std', 0.4, 0.05)
+```
+
+
+```{r Student_Model2}
+plot_sd(stds, 'omega', 2, 'std', 0.6, 0.05)
+plot_sd(stds, 'alpha', 2, 'std', 0.5, 0.05)
+plot_sd(stds, 'beta', 2, 'std', 0.5, 0.05)
+```
+
+```{r Student_Model3}
+plot_sd(stds, 'omega', 3, 'std', 2.4, 0.2)
+plot_sd(stds, 'alpha', 3, 'std', 0.3, 0.05)
+plot_sd(stds, 'beta', 3, 'std', 0.3, 0.05)
+```
+
+```{r SkewNormal_Model1}
+plot_sd(stds, 'omega', 1, 'snorm', 1, 0.1)
+plot_sd(stds, 'alpha', 1, 'snorm', 0.3, 0.1)
+plot_sd(stds, 'beta', 1, 'snorm', 0.3, 0.1)
+```
+
+```{r SkewNormal_Model2}
+plot_sd(stds, 'omega', 2, 'snorm', 0.6, 0.1)
+plot_sd(stds, 'alpha', 2, 'snorm', 0.4, 0.1)
+plot_sd(stds, 'beta', 2, 'snorm', 0.4, 0.05)
+```
+
+```{r SkewNormal_Model3}
+plot_sd(stds, 'omega', 3, 'snorm', 1.6, 0.2)
+plot_sd(stds, 'alpha', 3, 'snorm', 0.3, 0.05)
+plot_sd(stds, 'beta', 3, 'snorm', 0.3, 0.05)
+```

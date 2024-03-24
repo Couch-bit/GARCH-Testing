@@ -1,0 +1,108 @@
+---
+title: "Analiza estymatora wariancji w GARCH(1, 1)"
+author: "Cezary Moskal"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+    code_folding: "hide"
+    css: "style.css"
+---
+
+```{r Setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(latex2exp)
+library(tidyverse)
+```
+
+```{r Functions}
+n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
+colors <- c('Estymator' = 'orange',
+            'Średnia' = 'blue',
+            'Prawdziwa Wartość' = 'red')
+
+plot_sd <- function(sd, est, variable, mod, dis, cap, interval) {
+  if (dis == 'std') {
+    dist_name = 't-student' 
+  }
+  else {
+    dist_name = 'skew-normal'
+  }
+  if (variable == 'omega') {
+    latex = '\\omega'
+  }
+  else if (variable == 'alpha') {
+    latex = '$\\alpha_1$'
+  }
+  else {
+    latex = '$\\beta_1$'
+  }
+  sd = sd %>% 
+    filter(parameter == variable, model == mod, dist == dis)
+  est = est %>%
+    filter(parameter == variable, model == mod, dist == dis)
+  means = est %>%
+    group_by(n) %>%
+    summarise(mean = mean(std))
+  p = ggplot() +
+    geom_jitter(mapping = aes(x = est$n, y = est$std, color = 'Estymator'),
+                              alpha = 0.3, key_glyph = draw_key_rect) +
+    geom_line(aes(x = n, y = sd$std_err, color = 'Prawdziwa Wartość'),
+              linetype = 'dashed', linewidth = 1, key_glyph = draw_key_rect) +
+    geom_point(aes(x = n, y = means$mean, color = 'Średnia'), size = 3,
+             key_glyph = draw_key_rect) +
+    ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
+            TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
+                       dist_name, ')'))) +
+    xlab('Próba') +
+    ylab(TeX(paste0('Odchylenie standardowe ',  latex))) +
+    scale_x_continuous(trans = 'log10', expand = c(0, 0),
+                       breaks = n) +
+    scale_y_continuous(expand = c(0, 0), limits = c(0, cap),
+                       breaks = seq(0, cap, interval)) +
+    scale_color_manual(values = colors) +
+    guides(color = guide_legend('')) +
+    theme_bw()
+  return(p)
+}
+```
+
+```{r LoadData}
+stds <- read.csv('Results/Std.csv')
+ests <- read.csv('Results/Est.csv')
+```
+
+```{r Student_Model1}
+plot_sd(stds, ests, 'omega', 1, 'std', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 1, 'std', 1, 0.05)
+plot_sd(stds, ests, 'beta', 1, 'std', 1, 0.05)
+```
+
+```{r Student_Model2}
+plot_sd(stds, ests, 'omega', 2, 'std', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 2, 'std', 1, 0.1)
+plot_sd(stds, ests, 'beta', 2, 'std', 1, 0.1)
+```
+
+```{r Student_Model3}
+plot_sd(stds, ests, 'omega', 3, 'std', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 3, 'std', 1, 0.05)
+plot_sd(stds, ests, 'beta', 3, 'std', 1, 0.05)
+```
+
+```{r SkewNormal_Model1}
+plot_sd(stds, ests, 'omega', 1, 'snorm', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 1, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'beta', 1, 'snorm', 1, 0.05)
+```
+
+```{r SkewNormal_Model2}
+plot_sd(stds, ests, 'omega', 2, 'snorm', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 2, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'beta', 2, 'snorm', 1, 0.05)
+```
+
+```{r SkewNormal_Model3}
+plot_sd(stds, ests, 'omega', 3, 'snorm', 3, 0.2)
+plot_sd(stds, ests, 'alpha', 3, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'beta', 3, 'snorm', 1, 0.05)
+```
