@@ -17,8 +17,8 @@ library(latex2exp)
 
 ```{r Functions}
 n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
-colors <- c('Niepoprawny rozkład' = '#DB473B',
-            'Poprawny rozkład' = '#009E73')
+colors <- c('Niepoprawny Rozkład' = '#DB473B',
+            'Poprawny Rozkład' = '#009E73')
 
 plot_sd <- function(sd, variable, mod, dis, cap, interval) {
   if (dis == 'std') {
@@ -39,8 +39,8 @@ plot_sd <- function(sd, variable, mod, dis, cap, interval) {
   p = sd %>% 
   filter(parameter == variable, model == mod, dist == dis) %>%
   ggplot(key_glyph = draw_key_rect) +
-    geom_line(aes(x = n, y = std_err, color = 'Niepoprawny rozkład')) +
-    geom_line(aes(x = n, y = std, color = 'Poprawny rozkład')) +
+    geom_line(aes(x = n, y = std_err, color = 'Niepoprawny Rozkład')) +
+    geom_line(aes(x = n, y = std, color = 'Poprawny Rozkład')) +
     ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
             TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
                        dist_name, ')'))) +
@@ -82,13 +82,13 @@ plot_sd(stds, 'beta', 3, 'std', 0.3, 0.05)
 
 ```{r SkewNormal_Model1}
 plot_sd(stds, 'omega', 1, 'snorm', 1, 0.1)
-plot_sd(stds, 'alpha', 1, 'snorm', 0.3, 0.1)
-plot_sd(stds, 'beta', 1, 'snorm', 0.3, 0.1)
+plot_sd(stds, 'alpha', 1, 'snorm', 0.3, 0.05)
+plot_sd(stds, 'beta', 1, 'snorm', 0.3, 0.05)
 ```
 
 ```{r SkewNormal_Model2}
 plot_sd(stds, 'omega', 2, 'snorm', 0.6, 0.1)
-plot_sd(stds, 'alpha', 2, 'snorm', 0.4, 0.1)
+plot_sd(stds, 'alpha', 2, 'snorm', 0.4, 0.05)
 plot_sd(stds, 'beta', 2, 'snorm', 0.4, 0.05)
 ```
 

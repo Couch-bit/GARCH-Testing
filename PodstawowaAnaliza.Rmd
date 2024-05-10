@@ -18,8 +18,8 @@ library(BSDA)
 
 ```{r Functions}
 n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
-colors <- c('estymacje' = 'orange',
-            'średnia' = 'blue', 'prawdziwa wartość' = 'red')
+colors <- c('Estymacje' = 'orange',
+            'Średnia' = 'blue', 'Prawdziwa Wartość' = 'red')
 
 garch <- function(mu, omega, alpha, beta, model = 'norm',
                   shape = 0, skew = 0, estimate = 'norm') {
@@ -92,12 +92,12 @@ plot_estimates <- function(variable, value, dis, mod, cap, interval) {
     latex = '$\\beta_1$'
   }
   p = ggplot() +
-  geom_jitter(aes(x = rep(n, each = 100), y = var1, color = 'estymacje'),
+  geom_jitter(aes(x = rep(n, each = 100), y = var1, color = 'Estymacje'),
               alpha = 0.3, key_glyph = draw_key_rect) +
-  geom_hline(aes(color = 'prawdziwa wartość', yintercept = value),
+  geom_hline(aes(color = 'Prawdziwa Wartość', yintercept = value),
              linetype = 'dashed',
              linewidth = 1, key_glyph = draw_key_rect) +
-  geom_point(aes(x = n, y = var2, color = 'średnia'), size = 3,
+  geom_point(aes(x = n, y = var2, color = 'Średnia'), size = 3,
              key_glyph = draw_key_rect) +
   ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
           paste0('Zależność od wielkości próby (Model ', mod, ' - ', dis, ')')) +
@@ -114,13 +114,13 @@ plot_estimates <- function(variable, value, dis, mod, cap, interval) {
 }
 ```
 
-$$r_t=\mu+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=\omega+\alpha_1a_{t-1}^2+\beta_1\sigma_{t-1}^2$$
+$$r_t=\mu+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=\omega+\alpha_1\varepsilon_{t-1}^2+\beta_1\sigma_{t-1}^2$$
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
-$$\sigma_t^2=1+0.4a_{t-1}^2+0.5\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
+$$\sigma_t^2=1+0.4\varepsilon_{t-1}^2+0.5\sigma_{t-1}^2$$
 
 ```{r Normal_Model1}
 garch(5, 1, 0.4, 0.5)
@@ -137,9 +137,9 @@ z.test(beta_values[1:100], mu = 0.5, sigma.x = sd(beta_values[1:100]))
 z.test(beta_values[101:200], mu = 0.5, sigma.x = sd(beta_values[101:200]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
-$$\sigma_t^2=1+0.8a_{t-1}^2+0.1\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
+$$\sigma_t^2=1+0.8\varepsilon_{t-1}^2+0.1\sigma_{t-1}^2$$
 
 ```{r Normal_Model2}
 garch(5, 1, 0.8, 0.1)
@@ -154,9 +154,9 @@ z.test(alpha_values[1:100], mu = 0.8, sigma.x = sd(alpha_values[1:100]))
 z.test(beta_values[1:100], mu = 0.1, sigma.x = sd(beta_values[1:100]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
-$$\sigma_t^2=1+0.1a_{t-1}^2+0.8\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
+$$\sigma_t^2=1+0.1\varepsilon_{t-1}^2+0.8\sigma_{t-1}^2$$
 
 ```{r Normal_Model3}
 garch(5, 1, 0.1, 0.8)
@@ -174,9 +174,9 @@ z.test(beta_values[1:100], mu = 0.8, sigma.x = sd(beta_values[1:100]))
 
 $$K=\frac{6}{\nu-4} + 3=9$$
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.4a_{t-1}^2+0.5\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.4\varepsilon_{t-1}^2+0.5\sigma_{t-1}^2$$
 
 ```{r Student_Model1_Err}
 garch(5, 1, 0.4, 0.5, 'std', 5)
@@ -204,9 +204,9 @@ z.test(alpha_values[1:100], mu = 0.4, sigma.x = sd(alpha_values[1:100]))
 z.test(beta_values[1:100], mu = 0.5, sigma.x = sd(beta_values[1:100]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.8a_{t-1}^2+0.1\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.8\varepsilon_{t-1}^2+0.1\sigma_{t-1}^2$$
 
 ```{r Student_Model2_Err}
 garch(5, 1, 0.8, 0.1, 'std', 5)
@@ -234,9 +234,9 @@ z.test(alpha_values[1:100], mu = 0.8, sigma.x = sd(alpha_values[1:100]))
 z.test(beta_values[1:100], mu = 0.1, sigma.x = sd(beta_values[1:100]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.1a_{t-1}^2+0.8\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.1\varepsilon_{t-1}^2+0.8\sigma_{t-1}^2$$
 
 ```{r Student_Model3_Err}
 garch(5, 1, 0.1, 0.8, 'std', 5)
@@ -276,9 +276,9 @@ $$\delta=\frac{4}{\sqrt{17}}$$
 
 $$A=\frac{4-\pi}{2}\frac{(\delta\sqrt{2/\pi})^3}{(1-2\delta^2/\pi)^{3/2}}\approx0.784427$$
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.4a_{t-1}^2+0.5\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.4\varepsilon_{t-1}^2+0.5\sigma_{t-1}^2$$
 
 ```{r SkewNormal_Model1_Err}
 garch(5, 1, 0.4, 0.5, 'snorm', skew = 4)
@@ -306,9 +306,9 @@ z.test(alpha_values[1:100], mu = 0.4, sigma.x = sd(alpha_values[1:100]))
 z.test(beta_values[1:100], mu = 0.5, sigma.x = sd(beta_values[1:100]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.8a_{t-1}^2+0.1\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.8\varepsilon_{t-1}^2+0.1\sigma_{t-1}^2$$
 
 ```{r SkewNormal_Model2_Err}
 garch(5, 1, 0.8, 0.1, 'snorm', skew = 4)
@@ -336,9 +336,9 @@ z.test(alpha_values[1:100], mu = 0.8, sigma.x = sd(alpha_values[1:100]))
 z.test(beta_values[1:100], mu = 0.1, sigma.x = sd(beta_values[1:100]))
 ```
 
-$$r_t=5+a_t$$
-$$a_t=\epsilon_t\sigma_t$$
-$$\sigma_t^2=1+0.1a_{t-1}^2+0.8\sigma_{t-1}^2$$
+$$r_t=5+\varepsilon_t$$
+$$\varepsilon_t=\epsilon_t\sigma_t$$
+$$\sigma_t^2=1+0.1\varepsilon_{t-1}^2+0.8\sigma_{t-1}^2$$
 
 ```{r SkewNormal_Model3_Err}
 garch(5, 1, 0.1, 0.8, 'snorm', skew = 4)

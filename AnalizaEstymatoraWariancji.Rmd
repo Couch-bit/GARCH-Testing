@@ -73,8 +73,8 @@ ests <- read.csv('Results/Est.csv')
 
 ```{r Student_Model1}
 plot_sd(stds, ests, 'omega', 1, 'std', 3, 0.2)
-plot_sd(stds, ests, 'alpha', 1, 'std', 1, 0.05)
-plot_sd(stds, ests, 'beta', 1, 'std', 1, 0.05)
+plot_sd(stds, ests, 'alpha', 1, 'std', 1, 0.1)
+plot_sd(stds, ests, 'beta', 1, 'std', 1, 0.1)
 ```
 
 ```{r Student_Model2}
@@ -85,24 +85,24 @@ plot_sd(stds, ests, 'beta', 2, 'std', 1, 0.1)
 
 ```{r Student_Model3}
 plot_sd(stds, ests, 'omega', 3, 'std', 3, 0.2)
-plot_sd(stds, ests, 'alpha', 3, 'std', 1, 0.05)
-plot_sd(stds, ests, 'beta', 3, 'std', 1, 0.05)
+plot_sd(stds, ests, 'alpha', 3, 'std', 1, 0.1)
+plot_sd(stds, ests, 'beta', 3, 'std', 1, 0.1)
 ```
 
 ```{r SkewNormal_Model1}
 plot_sd(stds, ests, 'omega', 1, 'snorm', 3, 0.2)
-plot_sd(stds, ests, 'alpha', 1, 'snorm', 1, 0.05)
-plot_sd(stds, ests, 'beta', 1, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'alpha', 1, 'snorm', 1, 0.1)
+plot_sd(stds, ests, 'beta', 1, 'snorm', 1, 0.1)
 ```
 
 ```{r SkewNormal_Model2}
 plot_sd(stds, ests, 'omega', 2, 'snorm', 3, 0.2)
-plot_sd(stds, ests, 'alpha', 2, 'snorm', 1, 0.05)
-plot_sd(stds, ests, 'beta', 2, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'alpha', 2, 'snorm', 1, 0.1)
+plot_sd(stds, ests, 'beta', 2, 'snorm', 1, 0.1)
 ```
 
 ```{r SkewNormal_Model3}
 plot_sd(stds, ests, 'omega', 3, 'snorm', 3, 0.2)
-plot_sd(stds, ests, 'alpha', 3, 'snorm', 1, 0.05)
-plot_sd(stds, ests, 'beta', 3, 'snorm', 1, 0.05)
+plot_sd(stds, ests, 'alpha', 3, 'snorm', 1, 0.1)
+plot_sd(stds, ests, 'beta', 3, 'snorm', 1, 0.1)
 ```

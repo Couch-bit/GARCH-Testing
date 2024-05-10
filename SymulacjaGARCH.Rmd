@@ -15,8 +15,8 @@ library(tidyverse)
 library(latex2exp)
 ```
 
-$$a_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
-$$\sigma_t^2=1+0.4a_{t-1}^2+0.5\sigma_{t-1}^2$$
+$$\varepsilon_t=\epsilon_t\sigma_t,\epsilon_t\sim{IN(0,1)}$$
+$$\sigma_t^2=1+0.4\varepsilon_{t-1}^2+0.5\sigma_{t-1}^2$$
 
 ```{r Plot}
 set.seed(1)
@@ -33,7 +33,7 @@ ggplot() +
   geom_line(aes(x = 1:1000, y = data)) +
   ggtitle('Symulacja GARCH(1, 1)', subtitle = 'Model 1 - norm') +
   labs(x = 't',
-       y = TeX('$a_t$')) +
+       y = TeX('$\\epsilon_t$')) +
   scale_x_continuous(expand = c(0.01, 0), breaks = seq(0, 1000, 100)) +
   scale_y_continuous(expand = c(0.01, 0), breaks = seq(-20, 20, 4)) +
   theme_bw()
