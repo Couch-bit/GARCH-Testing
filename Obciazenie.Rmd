@@ -21,7 +21,7 @@ n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
 plot_err <- function(err, variable, mod, dis,
                      cap = 0.4, interval = 0.05) {
   if (dis == 'std') {
-    dist_name = 't-student' 
+    dist_name = 't-Student' 
   }
   else {
     dist_name = 'skew-normal'

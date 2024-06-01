@@ -17,12 +17,12 @@ library(latex2exp)
 
 ```{r Functions}
 n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
-colors <- c('Niepoprawny Rozkład' = '#DB473B',
-            'Poprawny Rozkład' = '#009E73')
+colors <- c('Niepoprawne Założenie' = '#DB473B',
+            'Poprawne Założenie' = '#009E73')
 
 plot_sd <- function(sd, variable, mod, dis, cap, interval) {
   if (dis == 'std') {
-    dist_name = 't-student' 
+    dist_name = 't-Student' 
   }
   else {
     dist_name = 'skew-normal'
@@ -39,8 +39,8 @@ plot_sd <- function(sd, variable, mod, dis, cap, interval) {
   p = sd %>% 
   filter(parameter == variable, model == mod, dist == dis) %>%
   ggplot(key_glyph = draw_key_rect) +
-    geom_line(aes(x = n, y = std_err, color = 'Niepoprawny Rozkład')) +
-    geom_line(aes(x = n, y = std, color = 'Poprawny Rozkład')) +
+    geom_line(aes(x = n, y = std_err, color = 'Niepoprawne Założenie')) +
+    geom_line(aes(x = n, y = std, color = 'Poprawne Założenie')) +
     ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
             TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
                        dist_name, ')'))) +

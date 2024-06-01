@@ -16,13 +16,13 @@ library(tidyverse)
 
 ```{r Functions}
 n <- c(100, 250, 500, 1000, 2500, 5000, 10000)
-colors <- c('Estymator' = 'orange',
+colors <- c('Estymacje' = 'orange',
             'Średnia' = 'blue',
             'Prawdziwa Wartość' = 'red')
 
 plot_sd <- function(sd, est, variable, mod, dis, cap, interval) {
   if (dis == 'std') {
-    dist_name = 't-student' 
+    dist_name = 't-Student' 
   }
   else {
     dist_name = 'skew-normal'
@@ -44,12 +44,13 @@ plot_sd <- function(sd, est, variable, mod, dis, cap, interval) {
     group_by(n) %>%
     summarise(mean = mean(std))
   p = ggplot() +
-    geom_jitter(mapping = aes(x = est$n, y = est$std, color = 'Estymator'),
-                              alpha = 0.3, key_glyph = draw_key_rect) +
+    geom_jitter(mapping = aes(x = est$n, y = est$std, color = 'Estymacje'),
+                alpha = 0.3, key_glyph = draw_key_rect,
+                fill = 'orange') +
     geom_line(aes(x = n, y = sd$std_err, color = 'Prawdziwa Wartość'),
               linetype = 'dashed', linewidth = 1, key_glyph = draw_key_rect) +
     geom_point(aes(x = n, y = means$mean, color = 'Średnia'), size = 3,
-             key_glyph = draw_key_rect) +
+               key_glyph = draw_key_rect, fill='blue') +
     ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
             TeX(paste0('Zależność od wielkości próby (Model ', mod, ' - ',
                        dist_name, ')'))) +

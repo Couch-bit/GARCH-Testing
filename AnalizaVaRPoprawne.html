@@ -11,7 +11,7 @@
 
 <meta name="author" content="Cezary Moskal" />
 
-<meta name="date" content="2024-03-30" />
+<meta name="date" content="2024-05-29" />
 
 <title>Analiza estymacji VaR w GARCH(1, 1) - Kontynuacja</title>
 
@@ -442,7 +442,7 @@ display: none;
 <h1 class="title toc-ignore">Analiza estymacji VaR w GARCH(1, 1) -
 Kontynuacja</h1>
 <h4 class="author">Cezary Moskal</h4>
-<h4 class="date">2024-03-30</h4>
+<h4 class="date">2024-05-29</h4>
 
 </div>
 
@@ -462,13 +462,15 @@ plot_VaR &lt;- function(data, mod, dis) {
     filter(model == mod, dist == dis) %&gt;%
     ggplot() +
     geom_hline(aes(color = &#39;Prawdziwa Wartość&#39;, yintercept = 0.05),
-             linetype = &#39;dashed&#39;,
-             linewidth = 1, key_glyph = draw_key_rect) +
-    geom_line(aes(x = n, y = correct, color = &#39;Poprawny Rozkład&#39;)) +
-    geom_line(aes(x = n, y = historic, color = &#39;Historyczne&#39;)) +
+               linetype = &#39;dashed&#39;,
+               linewidth = 1, key_glyph = draw_key_rect) +
+    geom_line(aes(x = n, y = correct, color = &#39;Poprawny Rozkład&#39;),
+              key_glyph = draw_key_rect) +
+    geom_line(aes(x = n, y = historic, color = &#39;Historyczne&#39;),
+              key_glyph = draw_key_rect) +
     ggtitle(label = &#39;Estymacja VaR w GARCH(1,1)&#39;, subtitle = 
-          paste0(&#39;Zależność od wielkości próby (Model &#39;,
-                 mod, &#39; - &#39;, dist_name, &#39;)&#39;)) +
+            paste0(&#39;Zależność od wielkości próby (Model &#39;,
+                   mod, &#39; - &#39;, dist_name, &#39;)&#39;)) +
     xlab(&#39;Próba&#39;) +
     ylab(&#39;% Przekroczeń&#39;) +
     scale_x_continuous(trans = &#39;log10&#39;, expand = c(0, 0),

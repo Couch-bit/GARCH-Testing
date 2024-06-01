@@ -93,12 +93,12 @@ plot_estimates <- function(variable, value, dis, mod, cap, interval) {
   }
   p = ggplot() +
   geom_jitter(aes(x = rep(n, each = 100), y = var1, color = 'Estymacje'),
-              alpha = 0.3, key_glyph = draw_key_rect) +
+              alpha = 0.3, key_glyph = draw_key_rect, fill = 'orange') +
   geom_hline(aes(color = 'Prawdziwa Wartość', yintercept = value),
              linetype = 'dashed',
              linewidth = 1, key_glyph = draw_key_rect) +
   geom_point(aes(x = n, y = var2, color = 'Średnia'), size = 3,
-             key_glyph = draw_key_rect) +
+             key_glyph = draw_key_rect, fill = 'blue') +
   ggtitle(label = TeX(paste0('Estymator ', latex, ' w GARCH(1,1)')), subtitle = 
           paste0('Zależność od wielkości próby (Model ', mod, ' - ', dis, ')')) +
   xlab('Próba') +
@@ -180,9 +180,9 @@ $$\sigma_t^2=1+0.4\varepsilon_{t-1}^2+0.5\sigma_{t-1}^2$$
 
 ```{r Student_Model1_Err}
 garch(5, 1, 0.4, 0.5, 'std', 5)
-plot_estimates('omega', 1, 't-student (err)', '1', 5, 0.5)
-plot_estimates('alpha', 0.4, 't-student (err)', '1', 1, 0.1)
-plot_estimates('beta', 0.5, 't-student (err)', '1', 1, 0.1)
+plot_estimates('omega', 1, 't-Student (err)', '1', 5, 0.5)
+plot_estimates('alpha', 0.4, 't-Student (err)', '1', 1, 0.1)
+plot_estimates('beta', 0.5, 't-Student (err)', '1', 1, 0.1)
 ```
 
 ```{r Student_Model1_Tests_Err}
@@ -193,9 +193,9 @@ z.test(beta_values[1:100], mu = 0.5, sigma.x = sd(beta_values[1:100]))
 
 ```{r Student_Model1}
 garch(5, 1, 0.4, 0.5, 'std', 5, estimate = 'std')
-plot_estimates('omega', 1, 't-student', '1', 5, 0.5)
-plot_estimates('alpha', 0.4, 't-student', '1', 1, 0.1)
-plot_estimates('beta', 0.5, 't-student', '1', 1, 0.1)
+plot_estimates('omega', 1, 't-Student', '1', 5, 0.5)
+plot_estimates('alpha', 0.4, 't-Student', '1', 1, 0.1)
+plot_estimates('beta', 0.5, 't-Student', '1', 1, 0.1)
 ```
 
 ```{r Student_Model1_Tests}
@@ -210,9 +210,9 @@ $$\sigma_t^2=1+0.8\varepsilon_{t-1}^2+0.1\sigma_{t-1}^2$$
 
 ```{r Student_Model2_Err}
 garch(5, 1, 0.8, 0.1, 'std', 5)
-plot_estimates('omega', 1, 't-student (err)', '2', 2.5, 0.5)
-plot_estimates('alpha', 0.8, 't-student (err)', '2', 1, 0.1)
-plot_estimates('beta', 0.1, 't-student (err)', '2', 1, 0.1)
+plot_estimates('omega', 1, 't-Student (err)', '2', 2.5, 0.5)
+plot_estimates('alpha', 0.8, 't-Student (err)', '2', 1, 0.1)
+plot_estimates('beta', 0.1, 't-Student (err)', '2', 1, 0.1)
 ```
 
 ```{r Student_Model2_Tests_Err}
@@ -223,9 +223,9 @@ z.test(beta_values[1:100], mu = 0.1, sigma.x = sd(beta_values[1:100]))
 
 ```{r Student_Model2}
 garch(5, 1, 0.8, 0.1, 'std', 5, estimate = 'std')
-plot_estimates('omega', 1, 't-student', '2', 2.5, 0.5)
-plot_estimates('alpha', 0.8, 't-student', '2', 1, 0.1)
-plot_estimates('beta', 0.1, 't-student', '2', 1, 0.1)
+plot_estimates('omega', 1, 't-Student', '2', 2.5, 0.5)
+plot_estimates('alpha', 0.8, 't-Student', '2', 1, 0.1)
+plot_estimates('beta', 0.1, 't-Student', '2', 1, 0.1)
 ```
 
 ```{r Student_Model2_Tests}
@@ -240,9 +240,9 @@ $$\sigma_t^2=1+0.1\varepsilon_{t-1}^2+0.8\sigma_{t-1}^2$$
 
 ```{r Student_Model3_Err}
 garch(5, 1, 0.1, 0.8, 'std', 5)
-plot_estimates('omega', 1, 't-student (err)', '3', 11, 1)
-plot_estimates('alpha', 0.1, 't-student (err)', '3', 1, 0.1)
-plot_estimates('beta', 0.8, 't-student (err)', '3', 1, 0.1)
+plot_estimates('omega', 1, 't-Student (err)', '3', 11, 1)
+plot_estimates('alpha', 0.1, 't-Student (err)', '3', 1, 0.1)
+plot_estimates('beta', 0.8, 't-Student (err)', '3', 1, 0.1)
 ```
 
 ```{r Student_Model3_Tests_Err}
@@ -256,9 +256,9 @@ z.test(beta_values[101:200], mu = 0.8, sigma.x = sd(beta_values[101:200]))
 
 ```{r Student_Model3}
 garch(5, 1, 0.1, 0.8, 'std', 5, estimate = 'std')
-plot_estimates('omega', 1, 't-student', '3', 11, 1)
-plot_estimates('alpha', 0.1, 't-student', '3', 1, 0.1)
-plot_estimates('beta', 0.8, 't-student', '3', 1, 0.1)
+plot_estimates('omega', 1, 't-Student', '3', 11, 1)
+plot_estimates('alpha', 0.1, 't-Student', '3', 1, 0.1)
+plot_estimates('beta', 0.8, 't-Student', '3', 1, 0.1)
 ```
 
 ```{r Student_Model3_Tests}
